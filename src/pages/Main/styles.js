@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
 
 export const Container = styled.div`
 	max-width: 700px;
@@ -36,11 +36,46 @@ export const Form = styled.form`
 	}
 `;
 
-export const SubmitButton = styled.button.attrs({
-	type: 'submit',
-})`
-	background-color: #00c2c9;
-	padding: 0 15px;
+const rotate = keyframes`
+	from {
+		transform: rotate(0deg);
+	}
+
+	to {
+		transform: rotate(360deg);
+	}
 `;
 
-export const List = styled.ul``;
+export const SubmitButton = styled.button.attrs(props => ({
+	type: 'submit',
+	disabled: props.loading,
+}))`
+	background-color: #00c2c9;
+	padding: 0 15px;
+
+	&[disabled] {
+		cursor: not-allowed;
+		opacity: 0.3;
+	}
+	${props =>
+		props.loading &&
+		css`
+		svg {
+				animation: ${rotate} 2s linear infinite;
+		`}
+`;
+
+export const List = styled.ul`
+	margin-top: 30px;
+	list-style: none;
+
+	li {
+		font-size: 22px;
+		padding: 10px;
+
+		& + li {
+			border-top: 1px solid #eee;
+			margin-top: 10px;
+		}
+	}
+`;
