@@ -57,6 +57,10 @@ export const Issues = styled.ul`
 	margin-top: 50px;
 	list-style: none;
 
+	h2 {
+		color: #333;
+	}
+
 	li {
 		padding: 10px 15px;
 		display: flex;
@@ -76,16 +80,31 @@ export const Issues = styled.ul`
 `;
 
 export const IssueDescription = styled.div`
-	h3 {
+	display: flex;
+	flex-direction: column;
+
+	a {
 		font-family: 'Courier New', Courier, monospace;
-		font-size: 16px;
+		font-size: 15px;
 		line-height: 1.4;
 		color: #333;
+		text-decoration: none;
+	}
+	a:hover {
+		color: #00c2c9;
 	}
 
-	span {
+	strong {
 		color: #00c2c9;
 		font-weight: bold;
 		font-size: 14px;
+	}
+`;
+
+export const States = styled.div`
+	button {
+		padding: 10px;
+		margin: 10px;
+		border-radius: 8px;
 	}
 `;
