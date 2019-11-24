@@ -14,9 +14,23 @@ export default class Main extends Component {
 		error: false,
 	};
 
-	componentDidMount() {}
+	componentDidMount() {
+		const repositories = window.localStorage.getItem('repositories');
+		console.log(repositories);
 
-	componentDidUpdate() {}
+		if (repositories) {
+			this.setState({
+				repositories: JSON.parse(repositories),
+			});
+		}
+	}
+
+	componentDidUpdate(_, prevState) {
+		const { repositories } = this.state;
+		if (prevState.repositories !== repositories) {
+			window.localStorage.setItem('repositories', JSON.stringify(repositories));
+		}
+	}
 
 	handleInput = e => {
 		this.setState({
