@@ -14,13 +14,9 @@ export default class Main extends Component {
 		error: false,
 	};
 
-	componentDidMount() {
-		console.log('error: ', this.state.error);
-	}
+	componentDidMount() {}
 
-	componentDidUpdate() {
-		console.log('#componentDidUpdate error: ', this.state.error);
-	}
+	componentDidUpdate() {}
 
 	handleInput = e => {
 		this.setState({
@@ -32,21 +28,25 @@ export default class Main extends Component {
 		e.preventDefault();
 		const { repositories, newRepo } = this.state;
 
-		this.setState({ loading: 1 });
-
 		try {
-			const response = await api.get(`/repos/${newRepo}`);
-			console.log(response.data);
+			const verify = repositories.filter(repo => repo === newRepo);
+			if (verify.length > 0) {
+				throw new Error('Duplicate repository');
+			}
 
-			if (response.data) {
-				this.setState({
-					repositories: [...repositories, response.data.full_name],
-					newRepo: '',
-					error: false,
-				});
+			if (newRepo) {
+				this.setState({ loading: 1 });
+				const response = await api.get(`/repos/${newRepo}`);
+
+				if (response.data) {
+					this.setState({
+						repositories: [...repositories, response.data.full_name],
+						newRepo: '',
+						error: false,
+					});
+				}
 			}
 		} catch (err) {
-			console.log(err);
 			this.setState({ error: true });
 		}
 		this.setState({ loading: 0 });
