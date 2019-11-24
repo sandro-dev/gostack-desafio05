@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+import { Link } from 'react-router-dom';
+import { IoMdArrowBack } from 'react-icons/io';
 import Container from '../../components/Container';
 
 import api from '../../services/api';
@@ -46,6 +48,10 @@ export default class Repository extends Component {
 		return (
 			<Container>
 				<Owner>
+					<Link to="/">
+						<IoMdArrowBack />
+						voltar a página inicial
+					</Link>
 					<img src={owner.avatar_url} alt={owner.login} />
 					<h1>{repository.full_name}</h1>
 					<p>{repository.description}</p>

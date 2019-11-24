@@ -77,5 +77,15 @@ export const List = styled.ul`
 			border-top: 1px solid #eee;
 			margin-top: 10px;
 		}
+
+		a {
+			text-decoration: none;
+			color: #333;
+		}
+
+		a:hover {
+			font-size: 32px;
+			color: #00c2c9;
+		}
 	}
 `;

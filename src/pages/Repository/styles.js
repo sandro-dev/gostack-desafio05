@@ -30,6 +30,27 @@ export const Owner = styled.header`
 		width: 120px;
 		border-radius: 60px;
 	}
+
+	a {
+		text-decoration: none;
+		color: #333;
+		font-size: 18px;
+		padding: 10px;
+		border: 1px dashed #eee;
+		border-radius: 8px;
+		margin: 10px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+
+		svg {
+			font-size: 28px;
+		}
+	}
+
+	a:hover {
+		color: #00c2c9;
+	}
 `;
 
 export const Issues = styled.ul`
