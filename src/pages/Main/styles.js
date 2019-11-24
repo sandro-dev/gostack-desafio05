@@ -72,6 +72,9 @@ export const List = styled.ul`
 	li {
 		font-size: 22px;
 		padding: 10px;
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
 
 		& + li {
 			border-top: 1px solid #eee;
@@ -84,8 +87,14 @@ export const List = styled.ul`
 		}
 
 		a:hover {
-			font-size: 32px;
+			font-size: 24px;
 			color: #00c2c9;
 		}
+	}
+`;
+
+export const ContainerIcons = styled.div`
+	svg {
+		cursor: pointer;
 	}
 `;

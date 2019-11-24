@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 
 import { FaGithubAlt, FaPlus, FaSpinner } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
+import { MdDescription, MdDelete } from 'react-icons/md';
 import Container from '../../components/Container';
 
-import { Form, SubmitButton, List, Input } from './styles';
-
+import { Form, SubmitButton, List, Input, ContainerIcons } from './styles';
 import api from '../../services/api';
 
 export default class Main extends Component {
@@ -68,6 +68,13 @@ export default class Main extends Component {
 		this.setState({ loading: 0 });
 	};
 
+	handleDelete = repo => {
+		const { repositories } = this.state;
+		this.setState({
+			repositories: repositories.filter(r => r !== repo),
+		});
+	};
+
 	render() {
 		const { newRepo, repositories, loading, error } = this.state;
 		return (
@@ -98,6 +105,23 @@ export default class Main extends Component {
 							<Link to={`/repository/${encodeURIComponent(repository)}`}>
 								{repository}
 							</Link>
+
+							<ContainerIcons>
+								<Link to={`/repository/${encodeURIComponent(repository)}`}>
+									<MdDescription
+										color="#0984e3"
+										title={`Ver repositório ${repository}`}
+										size={32}
+									/>
+								</Link>
+								<MdDelete
+									color="#d63031"
+									type="button"
+									onClick={() => this.handleDelete(repository)}
+									title={`Deletar repositório ${repository}`}
+									size={32}
+								/>
+							</ContainerIcons>
 						</li>
 					))}
 				</List>
