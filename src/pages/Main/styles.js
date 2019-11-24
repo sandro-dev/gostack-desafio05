@@ -26,14 +26,14 @@ export const Form = styled.form`
 	margin-top: 20px;
 	display: flex;
 	flex-direction: row;
+`;
 
-	input {
-		flex: 1;
-		border: 1px solid #eee;
-		padding: 10px 15px;
-		border-radius: 4px;
-		font-size: 16px;
-	}
+export const Input = styled.input`
+	flex: 1;
+	border: 1px solid ${props => (props.error ? '#f00' : '#eee')};
+	padding: 10px 15px;
+	border-radius: 4px;
+	font-size: 16px;
 `;
 
 const rotate = keyframes`
