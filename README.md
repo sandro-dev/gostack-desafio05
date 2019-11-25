@@ -8,6 +8,14 @@
 
 <blockquote align="center">“Para quem fica melhor a cada dia, ficar pronto é utopia”!</blockquote>
 
+### Ferramentas
+- `eslint` 
+- `prettier`
+- `babel-eslint`
+- `styled-components`
+- `react-icons`
+- `react-router-dom` 
+
 ### Funcionalidades
 
 #### 1. Captando erros
