@@ -101,10 +101,19 @@ export const IssueDescription = styled.div`
 	}
 `;
 
-export const States = styled.div`
+export const IssueStates = styled.div`
 	button {
 		padding: 10px;
 		margin: 10px;
 		border-radius: 8px;
+	}
+
+	button:active {
+		background: #00c2c9;
+	}
+
+	button:focus {
+		background: #00c2c9;
+		color: #fff;
 	}
 `;

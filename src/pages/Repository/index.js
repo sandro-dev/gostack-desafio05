@@ -6,7 +6,13 @@ import Container from '../../components/Container';
 
 import api from '../../services/api';
 
-import { Loading, Owner, States, Issues, IssueDescription } from './styles';
+import {
+	Loading,
+	Owner,
+	IssueStates,
+	Issues,
+	IssueDescription,
+} from './styles';
 
 export default class Repository extends Component {
 	state = {
@@ -14,19 +20,30 @@ export default class Repository extends Component {
 		issues: [],
 		loading: true,
 		owner: {},
+		issueState: '',
 	};
 
 	async componentDidMount() {
-		const { match } = this.props;
+		this.handleGithubApi();
+	}
 
+	componentDidUpdate(_, prevState) {
+		const { issueState } = this.state;
+		if (prevState.issueState !== issueState) {
+			this.handleGithubApi(issueState);
+		}
+	}
+
+	handleGithubApi = async state => {
+		const { match } = this.props;
+		const { issueState } = this.state;
 		const repoName = decodeURIComponent(match.params.repository);
-		console.log('repoName: ', repoName);
 
 		const [repository, issues] = await Promise.all([
 			api.get(`/repos/${repoName}`),
 			api.get(`/repos/${repoName}/issues`, {
 				params: {
-					state: 'open',
+					state: issueState || 'open',
 					per_page: 5,
 				},
 			}),
@@ -38,17 +55,14 @@ export default class Repository extends Component {
 			owner: repository.data.owner,
 			loading: false,
 		});
+	};
 
-		console.log('repository', repository.data);
-		console.log('issues', issues.data);
-	}
-
-	handleTags = tag => {
-		console.log(tag);
+	handleIssueState = issueState => {
+		this.setState({ issueState });
 	};
 
 	render() {
-		const { repository, issues, owner, loading } = this.state;
+		const { repository, issues, owner, loading, issueState } = this.state;
 
 		if (loading) {
 			return <Loading>Carregando...</Loading>;
@@ -59,40 +73,28 @@ export default class Repository extends Component {
 				<Owner>
 					<Link to="/">
 						<IoMdArrowBack />
-						voltar a página inicial
+						back to main page
 					</Link>
 					<img src={owner.avatar_url} alt={owner.login} />
 					<h1>{repository.full_name}</h1>
 					<p>{repository.description}</p>
-					<States>
-						<button
-							type="button"
-							onClick={() => {
-								this.handleTags('all');
-							}}
-						>
+					<IssueStates>
+						<button type="button" onClick={() => this.handleIssueState('all')}>
 							All
 						</button>
-						<button
-							type="button"
-							onClick={() => {
-								this.handleTags('opened');
-							}}
-						>
+						<button type="button" onClick={() => this.handleIssueState('open')}>
 							Opened
 						</button>
 						<button
 							type="button"
-							onClick={() => {
-								this.handleTags('closed');
-							}}
+							onClick={() => this.handleIssueState('closed')}
 						>
 							Closed
 						</button>
-					</States>
+					</IssueStates>
 				</Owner>
 				<Issues>
-					<h2>List of Issues</h2>
+					<h2>List of {issueState || 'open'} issues</h2>
 					{issues.map(issue => (
 						<li key={issue.id}>
 							<img src={issue.user.avatar_url} alt={repository.owner.login} />
