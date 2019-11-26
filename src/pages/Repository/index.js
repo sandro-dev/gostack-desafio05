@@ -25,7 +25,8 @@ export default class Repository extends Component {
 		issueState: '',
 		disabled: true,
 		page: 1,
-		perPage: 5,
+		perPage: 30,
+		pageCount: 0,
 	};
 
 	async componentDidMount() {
@@ -36,8 +37,6 @@ export default class Repository extends Component {
 		const { issueState, page } = this.state;
 
 		// issueState = issueState || 'open';
-
-		console.log('issueState e page -> ', issueState || 'open', page);
 
 		const tag = this.refs[issueState || 'open'];
 		tag.focus();
@@ -73,6 +72,7 @@ export default class Repository extends Component {
 				issues: issues.data,
 				owner: repository.data.owner,
 				loading: false,
+				pageCount: issues.data.length,
 			});
 		} else {
 			const issues = await api.get(`/repos/${repoName}/issues`, {
@@ -83,7 +83,7 @@ export default class Repository extends Component {
 				},
 			});
 
-			this.setState({ issues: issues.data });
+			this.setState({ issues: issues.data, pageCount: issues.data.length });
 		}
 	};
 
@@ -96,7 +96,16 @@ export default class Repository extends Component {
 	};
 
 	render() {
-		const { repository, issues, owner, loading, issueState, page } = this.state;
+		const {
+			repository,
+			issues,
+			owner,
+			loading,
+			issueState,
+			page,
+			perPage,
+			pageCount,
+		} = this.state;
 
 		if (loading) {
 			return <Loading>Carregando...</Loading>;
@@ -163,6 +172,7 @@ export default class Repository extends Component {
 					<button type="button">{page}</button>
 					<button
 						type="button"
+						disabled={pageCount < perPage}
 						onClick={() => this.handleIssuePage(page, Number(+1))}
 					>
 						next page
