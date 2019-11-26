@@ -35,13 +35,18 @@ export default class Repository extends Component {
 	componentDidUpdate(_, prevState) {
 		const { issueState, page } = this.state;
 
-		console.log('issueState e page -> ', issueState, page);
+		// issueState = issueState || 'open';
+
+		console.log('issueState e page -> ', issueState || 'open', page);
+
+		const tag = this.refs[issueState || 'open'];
+		tag.focus();
 
 		if (prevState.issueState !== issueState) {
-			this.handleGithubApi(issueState);
+			this.handleGithubApi();
 		}
 		if (prevState.page !== page) {
-			this.handleGithubApi(issueState, page);
+			this.handleGithubApi();
 		}
 	}
 
@@ -78,9 +83,6 @@ export default class Repository extends Component {
 				},
 			});
 
-			console.log('data: ', issues.data);
-			console.log('config ', issues.config);
-
 			this.setState({ issues: issues.data });
 		}
 	};
@@ -111,17 +113,28 @@ export default class Repository extends Component {
 					<h1>{repository.full_name}</h1>
 					<p>{repository.description}</p>
 					<IssueStates>
-						<button type="button" onClick={() => this.handleIssueState('all')}>
-							All
-						</button>
-						<button type="button" onClick={() => this.handleIssueState('open')}>
-							Opened
+						<button
+							type="button"
+							ref="all"
+							onClick={() => this.handleIssueState('all')}
+							defaultChecked
+						>
+							all
 						</button>
 						<button
 							type="button"
+							ref="open"
+							autoFocus
+							onClick={() => this.handleIssueState('open')}
+						>
+							open
+						</button>
+						<button
+							type="button"
+							ref="closed"
 							onClick={() => this.handleIssueState('closed')}
 						>
-							Closed
+							closed
 						</button>
 					</IssueStates>
 				</Owner>

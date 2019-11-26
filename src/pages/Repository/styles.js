@@ -17,6 +17,11 @@ export const Owner = styled.header`
 	flex-direction: column;
 	align-items: center;
 
+	h1,
+	p {
+		margin: 10px 0;
+	}
+
 	p {
 		font-family: 'Courier New', Courier, monospace;
 		font-size: 12px;
@@ -54,7 +59,7 @@ export const Owner = styled.header`
 `;
 
 export const Issues = styled.ul`
-	margin-top: 50px;
+	margin-top: 10px;
 	list-style: none;
 
 	h2 {
@@ -119,9 +124,10 @@ export const Pagination = styled.div`
 	display: flex;
 	flex-direction: row;
 	justify-content: center;
-	margin-top: 50px;
+	margin-top: 10px;
 
-	button {
+	button,
+	a {
 		padding: 10px 15px;
 		margin: 5px;
 		border: 1px solid #eee;
@@ -131,7 +137,15 @@ export const Pagination = styled.div`
 	}
 
 	button:active,
+	button:focus,
 	button:nth-child(2) {
+		background: #00c2c9;
+		color: #fff;
+	}
+
+	a:active,
+	a:focus,
+	a:target {
 		background: #00c2c9;
 		color: #fff;
 	}
