@@ -37,24 +37,36 @@ export default class Repository extends Component {
 	handleGithubApi = async state => {
 		const { match } = this.props;
 		const { issueState } = this.state;
+
 		const repoName = decodeURIComponent(match.params.repository);
 
-		const [repository, issues] = await Promise.all([
-			api.get(`/repos/${repoName}`),
-			api.get(`/repos/${repoName}/issues`, {
+		if (!issueState) {
+			const [repository, issues] = await Promise.all([
+				api.get(`/repos/${repoName}`),
+				api.get(`/repos/${repoName}/issues`, {
+					params: {
+						state: 'open',
+						per_page: 5,
+					},
+				}),
+			]);
+
+			this.setState({
+				repository: repository.data,
+				issues: issues.data,
+				owner: repository.data.owner,
+				loading: false,
+			});
+		} else {
+			const issues = await api.get(`/repos/${repoName}/issues`, {
 				params: {
-					state: issueState || 'open',
+					state: issueState,
 					per_page: 5,
 				},
-			}),
-		]);
+			});
 
-		this.setState({
-			repository: repository.data,
-			issues: issues.data,
-			owner: repository.data.owner,
-			loading: false,
-		});
+			this.setState({ issues: issues.data });
+		}
 	};
 
 	handleIssueState = issueState => {
