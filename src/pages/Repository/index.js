@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 import { Link } from 'react-router-dom';
 import { IoMdArrowBack } from 'react-icons/io';
+import { MdArrowBack, MdArrowForward } from 'react-icons/md';
 import Container from '../../components/Container';
 
 import api from '../../services/api';
@@ -12,6 +13,7 @@ import {
 	IssueStates,
 	Issues,
 	IssueDescription,
+	Pagination,
 } from './styles';
 
 export default class Repository extends Component {
@@ -21,6 +23,9 @@ export default class Repository extends Component {
 		loading: true,
 		owner: {},
 		issueState: '',
+		disabled: true,
+		page: 1,
+		perPage: 5,
 	};
 
 	async componentDidMount() {
@@ -28,15 +33,21 @@ export default class Repository extends Component {
 	}
 
 	componentDidUpdate(_, prevState) {
-		const { issueState } = this.state;
+		const { issueState, page } = this.state;
+
+		console.log('issueState e page -> ', issueState, page);
+
 		if (prevState.issueState !== issueState) {
 			this.handleGithubApi(issueState);
 		}
+		if (prevState.page !== page) {
+			this.handleGithubApi(issueState, page);
+		}
 	}
 
-	handleGithubApi = async state => {
+	handleGithubApi = async function() {
 		const { match } = this.props;
-		const { issueState } = this.state;
+		const { issueState, page, perPage } = this.state;
 
 		const repoName = decodeURIComponent(match.params.repository);
 
@@ -46,7 +57,8 @@ export default class Repository extends Component {
 				api.get(`/repos/${repoName}/issues`, {
 					params: {
 						state: 'open',
-						per_page: 5,
+						per_page: perPage,
+						page,
 					},
 				}),
 			]);
@@ -61,9 +73,13 @@ export default class Repository extends Component {
 			const issues = await api.get(`/repos/${repoName}/issues`, {
 				params: {
 					state: issueState,
-					per_page: 5,
+					per_page: perPage,
+					page,
 				},
 			});
+
+			console.log('data: ', issues.data);
+			console.log('config ', issues.config);
 
 			this.setState({ issues: issues.data });
 		}
@@ -73,8 +89,12 @@ export default class Repository extends Component {
 		this.setState({ issueState });
 	};
 
+	handleIssuePage = (page, button) => {
+		this.setState({ page: page + Number(button) });
+	};
+
 	render() {
-		const { repository, issues, owner, loading, issueState } = this.state;
+		const { repository, issues, owner, loading, issueState, page } = this.state;
 
 		if (loading) {
 			return <Loading>Carregando...</Loading>;
@@ -105,6 +125,7 @@ export default class Repository extends Component {
 						</button>
 					</IssueStates>
 				</Owner>
+
 				<Issues>
 					<h2>List of {issueState || 'open'} issues</h2>
 					{issues.map(issue => (
@@ -117,6 +138,24 @@ export default class Repository extends Component {
 						</li>
 					))}
 				</Issues>
+
+				<Pagination>
+					<button
+						type="button"
+						disabled={page === Number(1)}
+						onClick={() => this.handleIssuePage(page, Number(-1))}
+					>
+						<MdArrowBack /> previous page
+					</button>
+					<button type="button">{page}</button>
+					<button
+						type="button"
+						onClick={() => this.handleIssuePage(page, Number(+1))}
+					>
+						next page
+						<MdArrowForward />
+					</button>
+				</Pagination>
 			</Container>
 		);
 	}

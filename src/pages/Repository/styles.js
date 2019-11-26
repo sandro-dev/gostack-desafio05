@@ -108,12 +108,35 @@ export const IssueStates = styled.div`
 		border-radius: 8px;
 	}
 
-	button:active {
-		background: #00c2c9;
-	}
-
+	button:active,
 	button:focus {
 		background: #00c2c9;
 		color: #fff;
+	}
+`;
+
+export const Pagination = styled.div`
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	margin-top: 50px;
+
+	button {
+		padding: 10px 15px;
+		margin: 5px;
+		border: 1px solid #eee;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+	}
+
+	button:active,
+	button:nth-child(2) {
+		background: #00c2c9;
+		color: #fff;
+	}
+
+	button:disabled {
+		cursor: not-allowed;
 	}
 `;
