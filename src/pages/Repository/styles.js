@@ -1,4 +1,14 @@
-import styled from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
+
+const rotate = keyframes`
+	from {
+		transform: rotate(0deg);
+	}
+
+	to {
+		transform: rotate(360deg);
+	}
+`;
 
 export const Loading = styled.div`
 	font-size: 38px;
@@ -10,6 +20,11 @@ export const Loading = styled.div`
 	justify-content: center;
 	align-items: center;
 	height: 100vh;
+
+	svg {
+		margin-right: 10px;
+		animation: ${rotate} 1s linear infinite;
+	}
 `;
 
 export const Owner = styled.header`
@@ -125,9 +140,9 @@ export const Pagination = styled.div`
 	flex-direction: row;
 	justify-content: center;
 	margin-top: 10px;
+	max-width: 700px;
 
-	button,
-	a {
+	button {
 		padding: 10px 15px;
 		margin: 5px;
 		border: 1px solid #eee;

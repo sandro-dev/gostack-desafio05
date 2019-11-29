@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import { Link } from 'react-router-dom';
-import { IoMdArrowBack } from 'react-icons/io';
+import { FaSpinner } from 'react-icons/fa';
 import { MdArrowBack, MdArrowForward } from 'react-icons/md';
 import Container from '../../components/Container';
 
@@ -25,7 +25,7 @@ export default class Repository extends Component {
 		issueState: '',
 		disabled: true,
 		page: 1,
-		perPage: 30,
+		perPage: 5,
 		pageCount: 0,
 	};
 
@@ -108,14 +108,18 @@ export default class Repository extends Component {
 		} = this.state;
 
 		if (loading) {
-			return <Loading>Carregando...</Loading>;
+			return (
+				<Loading>
+					<FaSpinner color="#fff" size={32} /> Carregando...
+				</Loading>
+			);
 		}
 
 		return (
 			<Container>
 				<Owner>
 					<Link to="/">
-						<IoMdArrowBack />
+						<MdArrowBack />
 						back to main page
 					</Link>
 					<img src={owner.avatar_url} alt={owner.login} />
